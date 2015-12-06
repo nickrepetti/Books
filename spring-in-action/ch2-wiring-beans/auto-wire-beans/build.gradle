@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'soundsystem.Test'
+mainClassName = 'soundsystem.App'
 
 repositories {
 	mavenCentral()
@@ -10,6 +10,7 @@ repositories {
 dependencies {
     compile 	'org.springframework:spring-context:4.2.3.RELEASE'
 	testCompile 'org.springframework:spring-test:4.2.3.RELEASE',
+				'com.github.stefanbirkner:system-rules:1.15.0',
 				'junit:junit:4.12'
 }
 
