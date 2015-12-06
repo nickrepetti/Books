@@ -1,0 +1,20 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'soundsystem.Test'
+
+repositories {
+	mavenCentral()
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+jar {
+	baseName = 'auto-wire-beans'
+	version = '0.1.0'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.3'
+}
