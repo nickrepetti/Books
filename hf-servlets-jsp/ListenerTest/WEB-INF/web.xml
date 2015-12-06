@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<servlet>
+		<servlet-name>ListenerTester</servlet-name>
+		<servlet-class>com.nickrepetti.ListenerTesterServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ListenerTester</servlet-name>
+		<url-pattern>/ListenerTest.do</url-pattern>
+	</servlet-mapping>
+	
+	<context-param>
+		<param-name>carMake</param-name>
+		<param-value>Chevy</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>com.nickrepetti.MyServletContextListener</listener-class>
+	</listener>
+</web-app>

@@ -1,0 +1,12 @@
+# Compiled source #
+###################
+*.class
+
+# Package Files #
+#################
+*.jar
+
+# Gradle #
+##########
+.gradle/
+build/
