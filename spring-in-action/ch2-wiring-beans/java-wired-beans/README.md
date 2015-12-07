@@ -1,5 +1,5 @@
 #Ch 2 - Wiring Beans
-##Auto Wiring Beans
+##Java Wired Beans
 
 Windows:
 Run Program:	gradlew.bat run 
