@@ -1,0 +1,27 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'soundsystem.App'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 	'org.springframework:spring-context:4.2.3.RELEASE'
+	testCompile 'org.springframework:spring-test:4.2.3.RELEASE',
+				'com.github.stefanbirkner:system-rules:1.15.0',
+				'junit:junit:4.12'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+jar {
+	baseName = 'xml-wired-beans'
+	version = '0.1.0'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.3'
+}
