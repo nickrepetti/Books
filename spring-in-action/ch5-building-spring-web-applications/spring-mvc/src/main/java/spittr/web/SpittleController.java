@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import spittr.data.SpittleRepository;
 
 @Controller
@@ -32,5 +33,14 @@ public class SpittleController {
 			spittleRepository.findSpittles(max, count));
 		
 		return "spittles";
+	}
+	
+	@RequestMapping(value="/{spittleId}", method=RequestMethod.GET)
+	public String spittle(
+		@PathVariable("spittleId") long spittleId, Model model) {
+		
+		model.addAttribute("spittle", spittleRepository.findOne(spittleId));
+		
+		return "spittle";
 	}
 }
