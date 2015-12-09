@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
+//apply plugin: 'war'
+apply plugin: 'war'
 
 mainClassName = 'spittr.App'
 
@@ -8,6 +10,7 @@ repositories {
 }
 
 dependencies {
+	providedCompile   'org.apache.tomcat:tomcat-servlet-api:7.0.37'
 	compile 	'org.springframework:spring-webmvc:4.2.3.RELEASE',
 				'org.apache.commons:commons-lang3:3.4',
 				'javax.servlet:javax.servlet-api:3.1.0',
@@ -28,4 +31,13 @@ jar {
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.3'
+}
+
+def tomcatDeployDirectory = "C:\\Program Files\\apache-tomcat-7.0.64\\webapps"
+
+task deploy(type: Copy) {
+	dependsOn clean
+	dependsOn war
+    from war.archivePath
+    into tomcatDeployDirectory
 }
