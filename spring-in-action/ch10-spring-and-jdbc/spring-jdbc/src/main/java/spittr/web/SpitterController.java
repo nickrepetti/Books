@@ -49,7 +49,9 @@ public class SpitterController {
 		
 		Spitter spitter = spitterRepository.findByUsername(username);
 		
-		model.addAttribute(spitter);
+		if (spitter != null) {
+			model.addAttribute(spitter);
+		}
 		
 		return "profile";
 	}

@@ -1,13 +1,17 @@
-package spittr.data.jdbc;
+package com.nickrepetti.spittr.dao.jdbc;
+
+import com.nickrepetti.spittr.dao.SpitterRepository;
+import com.nickrepetti.spittr.model.Spitter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+
+import java.util.List;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import spittr.data.SpitterRepository;
-import spittr.Spitter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcSpitterRepository implements SpitterRepository {
 
@@ -30,16 +34,18 @@ public class JdbcSpitterRepository implements SpitterRepository {
 	
 	@Override
 	public Spitter findByUsername(String username) {
-		try {
-			return jdbcTemplate.queryForObject(
-				"SELECT * FROM spitter WHERE username=?", 
-				new SpitterRowMapper(),
-				username);
-		}
-		catch (EmptyResultDataAccessException e) {
-			return null;
-		}
+		return jdbcTemplate.queryForObject(
+			"SELECT * FROM spitter WHERE username=?", 
+			new SpitterRowMapper(),
+			username);
 	}	
+	
+	@Override
+	public List<Spitter> findSpitters() {
+		return jdbcTemplate.query(
+			"SELECT * FROM spitter s", 
+			new SpitterRowMapper());
+	}
 
 	private static final class SpitterRowMapper implements RowMapper<Spitter> {
 		
@@ -48,7 +54,7 @@ public class JdbcSpitterRepository implements SpitterRepository {
 			String firstName = rs.getString("firstName");
 			String lastName = rs.getString("lastName");
 			String username = rs.getString("username");
-			String password = null; // No need to bring password
+			String password = null;
 			
 			return new Spitter(id, firstName, lastName, username, password);
 		}		

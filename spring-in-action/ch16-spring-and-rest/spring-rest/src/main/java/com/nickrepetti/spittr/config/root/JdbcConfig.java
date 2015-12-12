@@ -1,17 +1,19 @@
-package spittr.config;
+package com.nickrepetti.spittr.config.root;
+
+import com.nickrepetti.spittr.dao.SpitterRepository;
+import com.nickrepetti.spittr.dao.SpittleRepository;
+import com.nickrepetti.spittr.dao.jdbc.JdbcSpitterRepository;
+import com.nickrepetti.spittr.dao.jdbc.JdbcSpittleRepository;
 
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-
-import spittr.data.SpitterRepository;
-import spittr.data.SpittleRepository;
-import spittr.data.jdbc.JdbcSpitterRepository;
-import spittr.data.jdbc.JdbcSpittleRepository;
 
 @Configuration
 public class JdbcConfig {

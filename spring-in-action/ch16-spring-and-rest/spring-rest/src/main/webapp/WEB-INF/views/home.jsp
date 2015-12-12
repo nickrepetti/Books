@@ -6,13 +6,8 @@
 		<link rel="stylesheet" type="text/css" href="<c:url value='/resources/style.css' />" >
 	</head>
 	<body>
-		<h1>View Profile</h1>
-		<h4>
-			Username: <c:out value="${spitter.username}" />
-			<br />
-			Name: <c:out value="${spitter.firstName}" /> 
-			<c:out value="${spitter.lastName}" />
-			<br />
-		</h4>
+		<h1>Welcome to Spittr</h1>
+		<a href="<c:url value='/spittles' />">Spittles</a> |
+		<a href="<c:url value='/spitter/register' />">Register</a>
 	</body>
 </html>

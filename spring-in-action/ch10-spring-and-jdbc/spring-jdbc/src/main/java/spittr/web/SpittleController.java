@@ -3,6 +3,7 @@ package spittr.web;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import spittr.data.SpittleRepository;
+import spittr.Spittle;
 
 @Controller
 @RequestMapping("/spittles")
@@ -29,8 +31,9 @@ public class SpittleController {
 		@RequestParam(value="max", defaultValue=MAX_LONG_AS_STRING) long max, 
 		@RequestParam(value="count", defaultValue="20") int count, Model model) {
 		
-		model.addAttribute("spittleList",
-			spittleRepository.findSpittles(max, count));
+		List<Spittle> spittleList = spittleRepository.findSpittles(max, count);
+		
+		model.addAttribute("spittleList", spittleList);
 		
 		return "spittles";
 	}
@@ -39,7 +42,11 @@ public class SpittleController {
 	public String spittle(
 		@PathVariable("spittleId") long spittleId, Model model) {
 		
-		model.addAttribute("spittle", spittleRepository.findOne(spittleId));
+		Spittle spittle = spittleRepository.findOne(spittleId);
+		
+		if (spittle != null) {
+			model.addAttribute("spittle", spittle);
+		}
 		
 		return "spittle";
 	}

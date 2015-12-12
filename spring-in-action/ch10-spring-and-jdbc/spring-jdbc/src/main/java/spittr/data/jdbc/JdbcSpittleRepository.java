@@ -2,10 +2,13 @@ package spittr.data.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import spittr.data.SpittleRepository;
 import spittr.Spittle;
@@ -21,13 +24,57 @@ public class JdbcSpittleRepository implements SpittleRepository {
 
 	@Override
 	public Spittle findOne(long spittleId) {
-		return null;
+		try {
+			return jdbcTemplate.queryForObject(
+				"SELECT s.id, s.message, s.postedTime, s.spitterId, "
+				+ "sp.firstName, sp.lastName, sp.username, sp.password "
+				+ "FROM spittle s "
+				+ "INNER JOIN spitter sp "
+				+ "ON s.spitterId = sp.id "
+				+ "WHERE s.id = ? ",
+				new SpittleRowMapper(), spittleId);
+		}
+		catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 	
 	@Override
 	public List<Spittle> findSpittles(long max, int count) {
+		try {
+			return jdbcTemplate.query(
+				"SELECT s.id, s.message, s.postedTime, s.spitterId, "
+				+ "sp.firstName, sp.lastName, sp.username, sp.password "
+				+ "FROM spittle s "
+				+ "INNER JOIN spitter sp "
+				+ "ON s.spitterId = sp.id "
+				+ "WHERE s.id < ? "
+				+ "ORDER BY s.postedTime DESC LIMIT ?",
+				new SpittleRowMapper(), max, count);
+		}
+		catch (EmptyResultDataAccessException e) {
+			return new ArrayList<Spittle>();
+		}
+	}
+	
+	@Override
+	public Spittle save(Spittle spittle) {
 		return null;
 	}
+
+/*
+  public Spittle save(Spittle spittle) {
+    jdbc.update(
+        "insert into Spittle (message, created_at, latitude, longitude)" +
+        " values (?, ?, ?, ?)",
+        spittle.getMessage(),
+        spittle.getTime(),
+        spittle.getLatitude(),
+        spittle.getLongitude());
+		
+		return spittle;
+  }*/
+  
 	
 	private static final class SpittleRowMapper implements RowMapper<Spittle> {
 		

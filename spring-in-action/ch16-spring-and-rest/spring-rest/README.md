@@ -1,5 +1,5 @@
-#Ch 10 - Hitting the database with Spring and JDBC
-##Spring JDBC
+#Ch 16 - Creating REST APIs with Spring MVC
+##Spring REST
 
 Please note that the first time you run the server will take some time...
 

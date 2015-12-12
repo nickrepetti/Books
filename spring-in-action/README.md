@@ -6,3 +6,5 @@ Wiring Beans
 Building Spring Web Applications
 
 Spring and JDBC
+
+Spring and Rest

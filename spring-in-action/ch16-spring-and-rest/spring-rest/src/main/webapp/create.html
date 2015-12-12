@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>Spittr</title>
+	</head>
+	<body>
+		<div>
+			<a href="index.html">Back</a>
+			<br />
+			<h2>Create a new Spittle</h2>
+			<form id="newSpittleForm">
+				<label>Message: </label><input type="text" name="message" />
+				<br />
+				<input type="button" id="submitBtn" value="Create Spittle" />
+			</form>
+		</div>
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script>
+			$('#submitBtn').click(function() {
+				var formData = convertToJSON('#newSpittleForm');
+			
+				$.ajax({
+					type: 'POST',
+					url: 'spittle',
+					data: JSON.stringify(formData),
+					success: function(data, textStatus, jqXHR ) {
+						if (!data.errorCode) {
+							// Successful server interaction
+							window.location.replace('spittle/' + data.id);
+						}
+						else {
+							// Error message from server
+							alert('Server: ' + data.message);
+						}
+					},
+					error: function() {
+						// Trouble connecting to server or sever threw 
+						// exception and was not caught
+						alert('Oops, something went wrong.');
+					},
+					dataType: 'json',
+					contentType : 'application/json'
+				});
+			});
+			
+			function convertToJSON(formId) {
+				var formData = $(formId).serialize().split('&');
+
+				var jsonObject = {};
+				
+				for(var i = 0; i < formData.length; i++) {
+					var nameValuePair = formData[i].split('=');
+					
+					var name = nameValuePair[0];
+					var value = nameValuePair[1];
+					
+					jsonObject[name] = value;
+				}
+				
+				return jsonObject;
+			}
+		</script>
+	</body>
+</html>
