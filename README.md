@@ -1,3 +1,3 @@
 #playground
 
-This repository is a container for my random experiments and outdated projects
+This repository is a container for my random experiments and outdated projects.
