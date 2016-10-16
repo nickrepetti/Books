@@ -1,0 +1,37 @@
+<[
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\support.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+
+]><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <[ ! support.pageHead( {{ "title", "nickrepetti.com - Home" }} ) ]>
+  </head>
+  <body>
+	<[ ! support.pageNav( {{ "pgid", "Index" }} ) ]>
+    <div class="container-fluid" style='margin-top: 40px;'>
+      <div class="span9 offset2">
+        <div class="row-fluid">
+          <div class="span3"><img class="img-responsive" style='margin-left: auto; margin-right: auto; display: block; border: 1px solid #666666;' src="/images/nickRepetti.jpg"></div>
+          <div class="span8">
+            <h3 style='text-align: center;'>Welcome to Nick Repetti's Online Portfolio Website</h3>
+            <h4><b>About Me:</b></h4>
+            <p>I am a Senior at the University of Nevada, Las Vegas (UNLV) and am majoring in <b>Computer Engineering</b> and minoring in <b>Computer Science</b>.</p>
+		    <p>This website was built by me to act as a portfolio where I can display the projects that I have worked on - school and personal alike.</p>
+		    <p>If you are interested in contacting me, please reach me at: <a href='mailto:repettin@yahoo.com'>repettin@yahoo.com</a></p>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+    <hr style='margin-top:50px;'>
+
+    <footer>
+      <[ ! support.copyright( ) ]>
+    </footer>
+
+	<[ ! support.pageFoot( ) ]>
+  </body>
+</html>

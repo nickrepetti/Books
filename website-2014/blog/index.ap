@@ -1,0 +1,93 @@
+<[
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\support.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+
+	blog = new( "objBlog" )
+
+	user = new( "objUser" )
+	user.get( )
+	//support.keyValue.delete( "blog_stats" )
+		
+	date = new( "objDate" )
+
+	entryID = session.var( "entryID" )
+	if ( entryID )
+		if ( ! blog.deleteRecord( entryID ) )
+			! blog.errmsg
+			return
+		end
+		blog.close()
+	end
+
+]><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <[ ! support.pageHead( {{ "title", "nickrepetti.com - Blog" }} ) ]>
+  </head>
+  <body>
+    <[ ! support.pageNav( {{ "pgid", "Blog" }} ) ]>
+	<div class='container-fluid' style='margin-top: 40px'>
+	  <div class='span10 offset1' style='background-color: #F3F3F3;'>
+		<div class='row-fluid'>
+		  <[ ! blog.getStats( ) ]>
+		  <div class='span8' id='dispBlog'>
+		  	<form name='deleteBtn' id='deleteBtn' method='post' action='/blog/index.htm'>
+		  	<input type='hidden' name='entryID' id='entryID'>
+		  	<[
+		  	  blog.open( )
+		  	  blog.dbOrder( blog.ORDER_DATE )
+		  	  blog.dbGoTop( )
+		  
+		  	  if ( user.data.isLoggedIn )
+		  		! "<a href='/blog/form.htm' class='btn btn-primary' style='margin-left: 25px; margin-bottom: -25px;'>Create New Blog Post</a>"
+		  	  end
+		  		
+		  	  while ( ! blog.dbEOF( ) )
+		  		blog.get( )
+		  		<%
+		  		  <div style='padding: 25px;'>
+					<[ ! user.data.isLoggedIn ? "<a href='/blog/form.htm?q=edit&id=" + blog.blogID + "' class='btn btn-primary' style='margin-right: 1px;'>Edit</a><a href='#' onclick='del(\"" + blog.blogID + "\"); return false;' class='btn btn-danger'>Delete</a>" : "" ]>
+					<hr class='hRow'>
+					<h4><[ ! date.format( blog.date, "DDDD, MMMM DDD, YYYY" ) ]></h4>
+					<hr class='hRow' style='margin-bottom: 0px;'>
+					<h2 class='title'>
+					<[ 
+					! blog.title
+					  if ( blog.data.subTitle )
+						! ": " + blog.data.subTitle 
+					  end
+					]>
+					</h2><br>
+					<p><[ ! blog.data.content ]></p>
+				  </div>
+				%>
+		  		blog.dbSkip( )
+		  	  end
+		  		
+		  	  blog.close( )
+		  	]>
+		  	</form>
+		  </div>
+		</div>
+	  </div>  
+	</div>
+	
+    <hr style='margin-top:50px;'>
+
+    <footer>
+      <[ ! support.copyright( ) ]>
+    </footer>
+      
+    <[ ! support.pageFoot( ) ]>    
+  <script>
+    function del( entryID ){
+      if( confirm( 'Are you sure you want to delete this entry?' ) ){
+  	    deleteBtn.entryID.value = entryID;
+  	    deleteBtn.submit( );
+      }
+	}
+  </script>  
+  </body>
+</html>

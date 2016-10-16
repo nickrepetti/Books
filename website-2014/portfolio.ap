@@ -1,0 +1,71 @@
+<[	
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\support.flb
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\portfolio.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+	portfolio = new( "objPortfolio" )
+
+	curtab = 0 + session.var( "curtab" )
+	curCategory = 0 + session.var( "curCategory" )
+
+	q = session.var( "q" )
+
+	data = portfolio.tabRender( q )
+	if ( data )
+		! data 
+		return
+	end		
+]>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <[ ! support.pageHead( {{ "title", "nickrepetti.com - Portfolio" }} ) ]>
+  </head>
+  <body>
+	<[ ! support.pageNav( {{ "pgid", "Portfolio" }} ) ]>
+    <div class="container-fluid" style="margin-top: 40px;">
+      <div class="row-fluid">
+        <div class="span3">
+		  <div class='well' style='padding: 8px;'>
+            <ul class="nav nav-list">
+              <span class='listHeader'>SOFTWARE</span>
+              <hr class='listDivider'>
+              <li><a href="#" onclick="mainTab.set(0); return false;">Mobile & Web Applications</a></li>
+              <li><a href="#" onclick="mainTab.set(1); return false;">Misc. Software</a></li>
+              <span class='listHeader'>HARDWARE</span>
+              <hr class='listDivider'>
+              <li><a href="#" onclick="mainTab.set(2); return false;">Misc. Hardware</a></li>
+			  <li><a href="#" onclick="mainTab.set(3); return false;">VHDL</a></li>
+            </ul>
+		  </div>
+        </div>
+        <div class="span9">
+          <div class='pgtab' id="tab0"></div>
+          <div class='pgtab' id="tab1"></div>
+          <div class='pgtab' id="tab2"></div>
+          <div class='pgtab' id="tab3"></div>
+        </div>
+      </div>
+	</div>
+
+    <hr style='margin-top:50px;'>
+
+    <footer>
+      <[ ! support.copyright( ) ]>
+    </footer>
+
+    <[ ! support.pageFoot( ) ]>
+
+	<script>
+	  var mainTab = new Tab( );
+	  var mwTab = new Tab( ".pgtab0", ".mwTab li", [0,0], [], "mw" );
+	  var msTab = new Tab( ".pgtab1", ".msTab li", [0], [], "ms" );
+      var mhTab = new Tab( ".pgtab2", ".mhTab li", [0,0], [], "mh" );
+      var vhdlTab = new Tab( ".pgtab3", ".vhdlTab li", [0,0], [], "vhdl" );
+
+      mainTab.action = [ "mwTab.set(0)", "msTab.set(0)", "mhTab.set(0)", "vhdlTab.set(0)" ];
+      mainTab.set( <[ ! curTab ]> );	
+    </script>
+  </body>
+</html>

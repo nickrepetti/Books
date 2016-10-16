@@ -1,0 +1,68 @@
+<[
+	LIBRARY \sdweb\home\websites\NickRepetti\libs\support.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+	
+	uid = session.var( "uid" )
+
+	q = session.var( "q" )
+	if ( q == "l" )
+		user = new( "objUser" )
+		user.get( )
+	
+		pword = session.var( "pword" )
+
+		if ( user.uid != uid || user.data.password != pword )
+			errmsg = "Error - Invalid User Name or Password"
+			goto login_error
+		end
+
+		user.loginStatus( 1 )
+
+		session.redir( "/blog/index.htm" )
+		return
+	
+		label login_error
+	end
+
+]><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <[ ! support.pageHead( {{ "title", "Login" }} ) ]>
+  </head>
+  <body>
+  	<[ ! support.pageNav( {{ "pgid", "Login" }} ) ]>
+  	
+    <div class="container-fluid" style='margin-top: 40px;'>
+      <div class="row-fluid">
+        <div class="span6 offset4">
+          <h3>Sign In</h3>
+		  <form name="inpt" id="inpt" method="post" action="login.htm" autocomplete="off">
+	        <input type='hidden' name='q'>
+  		    <label for="uid">User ID:</label>
+		    <input type="text" class="input-xlarge" id="uid" name="uid" value="<[ ! uid ]>">
+		    <label for="pword">Password:</label>
+		    <input type="password" class="input-xlarge" id="pword" name="pword" onKeyDown="btnDefault( xlib.eventGet( event ), 'btn_signin' )">
+		    <br><a onclick='signin(); return false;' id='btn_signin' class='btn btn-large btn-inverse' href="#">Sign-in to Your Account!</a>
+	      </form>
+		  <[
+			  if ( errmsg )
+				! "<pre>" + errmsg + "</pre>"
+		   	  end
+		  ]>
+	    </div>
+	  </div>
+
+      <hr style='margin-top:50px;'>
+
+      <footer>
+        <[ ! support.copyright( ) ]>
+      </footer>
+
+    </div>
+    
+	<[ ! support.pageFoot( ) ]>
+  </body>
+</html>
+

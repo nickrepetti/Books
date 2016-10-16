@@ -1,0 +1,204 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// 	(c) Copyright 2013, Nick Repetti, All Rights Reserved
+//		Portions Copyright RadWeb Technologies, LLC.
+
+LIBRARY \fgl\libs\system.flb
+
+/////////////////////////////////////////////////
+CLASS objSupport
+/////////////////////////////////////////////////
+  PRIVATE:
+  	local _array, _keyvalue, _user
+  PUBLIC:
+	local errmsg
+	local userid = "itsme"
+
+	const key_base				= "7253482607482181"
+	const datadir				= 'c:\nickrepetti'
+	
+	METHOD new( )
+		return( 1 )
+	END
+
+	ACCESS array
+		if ( ! ::_array )
+			::_array = new( "objArray" )
+		end
+		return( ::_array )
+	END
+
+	METHOD cache( session )
+		session.cache = "public, max-cache=3600"
+	END
+	
+	METHOD copyright( ) 
+		return( "<div class='copyright'>Copyright &copy;  2014 by Nick Repetti</div>" )
+	END
+
+	METHOD genId( prefix="B0" )
+		local s
+		
+		s = prefix + numtoBaseX( seconds( ) )
+		
+		while ( len( s ) < 15 )
+			s += numtoBaseX( _rand( ) % 1000000 )
+		end
+		
+		return( s.left( 15 ) )
+	END
+
+	ACCESS keyvalue
+		if ( ! ::_keyvalue )
+			::_keyvalue = new( "objKeyValue", ::datadir )
+		end
+		return( ::_keyvalue )
+	END
+
+	ACCESS nonce
+		// hash|sig|userid|utc|hash
+		local t, h, s
+
+		t = strextract( "" + sysTime( 0 ), ".", 1 )
+		h = hashSHA1( t )
+		s = left( h, 13 ) + "|nar|" + ::userid + "|" + t + "|" + right( h, 11 )
+	
+		return( ::strencrypt( s ) )
+	END
+
+	METHOD pageFoot( )
+		local s = "<script src='/libs/jquery-1.9.1.min.js'></script>" +
+	    	"<script src='/libs/bootstrap.js'></script>" +
+	    	"<script src='/libs/support.js'></script>"
+	    return( s )
+	END
+	
+	METHOD pageHead( optsP )
+		local s, opts
+		
+		opts = aArray().add( {
+				{ "title", "" }
+			}
+		)
+		::array.assocUpdate( opts, optsP )
+		
+		s = new( "StringBuffer" )
+
+    	s += "<meta charset='utf-8'>"
+    	s += "<title>" + opts.title + "</title>"
+    	s += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
+    	s += "<meta name='description' content='The online portfolio website for Nick Repetti.'>"
+    	s += "<meta name='author' content='Nick Repetti'>"
+
+		s += "<style type='text/css'>"
+		s += "body{ padding-top:60px;padding-bottom:40px; }"
+		s += ".sidebar-nav{ padding:9px 0;}"
+		s += "@media (max-width:980px){ .navbar-text.pull-right{float: none;padding-left:5px;padding-right:5px;}}"
+		s += "</style>"
+
+    	s += "<link href='/libs/bootstrap.css' rel='stylesheet'>"
+    	s += "<link href='/libs/style.css' rel='stylesheet'>"
+
+    	s += "<script src='/libs/xwinlib.js'></script>"
+    	s += "<script src='/libs/sizzle_min.js'></script>"
+
+    	s += "<!--[if lt IE 9]>"
+    	s += "<script src='/libs/html5shiv.js'></script>"
+    	s += "<![endif]-->"
+
+	    //<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+	    //<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+	    //<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+	    //<link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+	    //<link rel="shortcut icon" href="../assets/ico/favicon.png">
+
+		return( s.value )
+	END
+
+	METHOD pageNav( optsP )
+		local s, opts
+		
+		opts = aArray().add( {
+				{ "pgid", "" }
+			}
+		)
+		::array.assocUpdate( opts, optsP )
+
+		s = new( "StringBuffer" )
+
+		s += "<div class='navbar navbar-inverse navbar-fixed-top'>"
+		s += "<div class='navbar-inner'>"
+		s += "<div class='container-fluid'>"
+		s += "<button type='button' class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>"
+		s += "<span class='icon-bar'></span>"
+		s += "<span class='icon-bar'></span>"
+		s += "<span class='icon-bar'></span>"
+		s += "</button>"
+		s += "<a class='brand' href='/index.htm'>nickrepetti.com</a>"
+		s += "<div class='nav-collapse collapse'>"
+		s += "<p class='navbar-text pull-right'>"
+
+		if ( ::user.data.isLoggedIn )
+			s += "<a href='/logout' class='navbar-link' style='margin-right:5px;'>Logout</a>"
+		else
+			s += "<a href='/login' class='navbar-link' style='margin-right:5px;'>Login</a>"
+		end
+		s += "</p>"		
+		s += "<ul class='nav' style='position:relative; top:0px;'>"
+		s += "<li" + ( opts.pgid == "Index" ? " class='active'" : "" ) + "><a href='/index.htm'>Home</a></li>"
+		s += "<li" + ( opts.pgid == "Portfolio" ? " class='active'" : "" ) + "><a href='/portfolio.htm'>Portfolio</a></li>"
+		s += "<li" + ( opts.pgid == "Blog" ? " class='active'" : "" ) + "><a href='/blog/index.htm'>Blog</a></li>"
+		s += "<li" + ( opts.pgid == "Resume" ? " class='active'" : "" ) + "><a href='/resume.htm'>Resume</a></li>"
+		s += "<li" + ( opts.pgid == "Contact" ? " class='active'" : "" ) + "><a href='/contact.htm'>Contact</a></li>"
+		s += "</ul>"
+		s += "</div></div></div></div>"
+		
+		return( s.value )
+	END
+
+	METHOD strDecrypt( str, key )
+		local e
+		if ( ! key )
+			key = ::key_base
+		end
+		try
+			return( decryptAES( key, base64decode( jsDecode( str ) ) ) )
+		catch ( e )
+		end
+		try
+			return( decryptAES( key, base64decode( str ) ) )
+		catch ( e )
+			return( "" )
+		end
+	END
+
+	METHOD strEncrypt( str="", key )
+		if ( ! key )
+			key = ::key_base
+		end
+		return( jsEncode( base64encode( encryptAES( key, str ) ) ) )
+	END
+
+	ACCESS user
+		if ( ! ::_user )
+			::_user = new( "objUser" )
+			::_user.get( )
+		end
+		return( ::_user )
+	END
+	
+END
+
+
+//////////////////////////////////////////////////////////
+FUNCTION sysTime( isKey=1 )
+//////////////////////////////////////////////////////////
+	local tme
+
+	tme = objDate( ).utc
+
+	if ( isKey )
+		return( objDate().utctokey( tme ) )
+	end
+		
+	return( tme )
+END

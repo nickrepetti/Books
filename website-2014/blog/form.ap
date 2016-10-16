@@ -1,0 +1,146 @@
+<[
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\support.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+
+	blog = new( "objBlog" )
+
+	user = new( "objUser" )
+	user.get( )
+	
+	q = session.var( "q" )
+	id = session.var( "id" )	
+	
+	if ( q == 'edit' )	
+		if ( ! blog.getRecord( id ) )
+			! blog.errmsg
+			return
+		end
+	end	
+
+	create = session.var( "create" )
+	editID = session.var( "editID" )
+	
+	if ( create == 't' )
+		blog.init( )
+		blog.blogid = support.genId( )
+		blog.title = session.var( "title" ).alltrim( )
+		blog.data.subtitle = session.var( "sub" ).alltrim( )
+		blog.data.content = session.var( "contents" ).alltrim( )
+		if ( ! blog.CreateNewRecord( blog.blogid ) )
+			! blog.errmsg
+			return
+		end
+		session.redir( "/blog/index.htm" )
+		return
+	end
+	
+	if ( editID )
+		if ( ! blog.getRecord( editID ) )
+			! blog.errmsg
+			return
+		end	
+		blog.title = session.var( "title" ).alltrim( )
+		blog.data.subtitle = session.var( "sub" ).alltrim( )
+		blog.data.content = session.var( "contents" ).alltrim( )
+		
+        blog.data.dateUpdated = date( "YYYYMMDDHHMNSS" )
+		
+		if ( ! blog.setRecord( blog.blogid ) )
+			! blog.errmsg
+			return
+		end
+		session.redir( "/blog/post.htm?id=" + blog.blogID )
+		return
+	end	
+]><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <[ 
+	  if ( q == 'edit' )    
+	    ! support.pageHead( {{ "title", "nickrepetti.com - Blog - Edit" }} ) 
+	  else
+	    ! support.pageHead( {{ "title", "nickrepetti.com - Blog - New Entry" }} ) 
+	  end
+    ]>
+  </head>
+  <body>
+    <[ ! support.pageNav( {{ "pgid", "Blog" }} ) ]>
+	<div class='container-fluid' style='margin-top: 40px;'>
+	  <div class='span10 offset1'>
+		<div class='row-fluid' style='background-color: #F3F3F3;'>
+		  <div style='margin: 15px;'>
+		    <h1 style='text-align: center;'><[ ! q == 'edit' ? "Edit Post" : "Create a New Blog Post" ]></h1>
+	  	    <div class='errMsg' id='errMsg' name='errMsg'></div>
+		    <form name='inpt' id='inpt' method='post' action='/blog/form.htm'>
+			  <input type='hidden' name='create'>
+		      <input type='hidden' name='editID'>
+		      <label for='title'>Title:</label>
+			  <input type='text' id='title' name='title' value="<[ ! blog.title ]>" class='input-xlarge'>
+			  <label for='sub'>Sub-Title (Optional):</label>
+			  <input type='text' id='sub' name='sub' value="<[ ! blog.data.subTitle ]>" class='input-xlarge'>
+			  <label for='contents' >Contents:</label>
+			  <textarea form='inpt' id='contents' name='contents' style='resize: none; width: 95%;' rows='11'><[ ! blog.data.content ]></textarea>
+			  <a href='#' onclick='<[ ! q == 'edit' ? "editPost()" : "newPost()" ]>; return false;' class='btn btn-primary'>Submit</a>
+			  <a href='javascript:history.back()' class='btn btn-danger'>Cancel</a>
+		    </form>		
+		  </div>		  
+	    </div>
+      </div>
+    </div>
+    
+    <hr style='margin-top:50px;'>
+    
+    <footer>
+      <[ ! support.copyright( ) ]>
+    </footer>
+    
+    <[ ! support.pageFoot( ) ]>
+    <script>
+	  function newPost( ) {
+		var err = "";
+
+		if ( ! inpt.title.value.length ) {
+		  err += "Must provide a title<br>";
+		}
+		
+		if ( ! inpt.contents.value.length ) {
+		  err += "Must provide contents.<br>";
+		}
+
+		if ( err.length ) {
+			domSet( "errMsg", "Please correct the following errors:<br>" + err + "<br>" );
+			domObject( "errMsg" ).style.display = "block";
+			return;
+		}
+		
+		inpt.create.value = 't';
+		
+		inpt.submit( );
+	  }
+	  
+	  function editPost( ) {
+		var err = "";
+
+		if ( ! inpt.title.value.length ) {
+		  err += "Must provide a title<br>";
+		}
+		
+		if ( ! inpt.contents.value.length ) {
+		  err += "Must provide contents.<br>";
+		}
+
+		if ( err.length ) {
+			domSet( "errMsg", "Please correct the following errors:<br>" + err + "<br>" );
+			domObject( "errMsg" ).style.display = "block";
+			return;
+		}
+		
+		inpt.editID.value = '<[ ! blog.blogID ]>';
+		
+		inpt.submit( );
+	  }
+    </script>    
+  </body>
+</html>

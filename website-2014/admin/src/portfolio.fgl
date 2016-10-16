@@ -1,0 +1,223 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// 	(c) Copyright 2013, Nick Repetti, All Rights Reserved
+//		Portions Copyright RadWeb Technologies, LLC.
+
+/////////////////////////////////////////////////
+CLASS objPortfolio
+/////////////////////////////////////////////////
+  PUBLIC:
+
+	METHOD new( )
+		return( 1 )
+	END
+
+	METHOD tabRender( tab )	
+		local s
+		
+		s = new( "StringBuffer" )
+
+		switch ( tab.lower() )
+		  case "tab0"
+			s += "<ul class='nav nav-tabs mwTab'>"
+			s += "<li><a href='#' onclick='mwTab.set(0); return false;'>Android: Calculator</a></li>"
+			s += "<li><a href='#' onclick='mwTab.set(1); return false;'>This Website</a></li>"
+			s += "</ul>"
+			s += "<div class='pgtab0 txtBody' id='mwtab0'></div>"
+			s += "<div class='pgtab0 txtBody' id='mwtab1'></div>"
+			break
+			
+		  case "tab1"
+			s += "<ul class='nav nav-tabs msTab'>"
+			s += "<li><a href='#' onclick='msTab.set(0); return false;'>C Shell</a></li>"
+			s += "</ul>"
+			s += "<div class='pgtab1 txtBody' id='mstab0'></div>"
+			break
+			
+		  case "tab2"
+			s += "<ul class='nav nav-tabs mhTab'>"
+			s += "<li><a href='#' onclick='mhTab.set(0); return false;'>Sensors, LCD, and PWMs</a></li>"
+			s += "<li><a href='#' onclick='mhTab.set(1); return false;'>Band Stop Filter</a></li>"
+			s += "</ul>"
+			s += "<div class='pgtab2 txtBody' id='mhtab0'></div>"
+			s += "<div class='pgtab2 txtBody' id='mhtab1'></div>"
+			break
+
+		  case "tab3"
+			s += "<ul class='nav nav-tabs vhdlTab'>"
+			s += "<li><a href='#' onclick='vhdlTab.set(0); return false;'>VHDL Binary Multiplier</a></li>"
+			s += "<li><a href='#' onclick='vhdlTab.set(1); return false;'>VHDL Game w/ VGA</a></li>"
+			s += "</ul>"
+			s += "<div class='pgtab3 txtBody' id='vhdltab0'></div>"
+			s += "<div class='pgtab3 txtBody' id='vhdltab1'></div>"
+			break
+
+		  case "mwtab0"
+			s += "<h2>Simple Calculator - Android App.</h2>"
+			s += "<h4>Main Files</h4>"
+			s += "<a href='/res/Calculator.txt' target='_blank'>Calculator.java</a> | "
+			s += "<a href='/res/Operator.txt' target='_blank'>Operator.java</a> | "
+			s += "<a href='/res/activity_main.txt' target='_blank'>activity_main.xml</a> | "
+			s += "<a href='/res/MainActivity.txt' target='_blank'>MainActivity.java</a>"
+			s += "<p class='note'>Note: Above files are displayed in .txt format for ease of display.  If you download them, make sure to save as the appropriate file extension.</p>"
+			s += "<img src='/images/simpleCalculator.jpg' style='float: right; padding-top: 15px; padding-bottom: 0px;'>"
+			s += "<h3>Description</h3>"
+			s += "<p>This app is an easy-to-use calculator that can do simple, everyday calculations.</p>"
+			s += "<h3>Background</h3>"
+			s += "<p>This calculator is based on a two-stack model where one stack holds the operations, and the other holds the actual numbers.  Operations are assigned a priority level, (remember PEMDAS?), and placed onto the stack by the algorithm.  Once the equals button is pressed, both stacks are cycled through, popping and executing instructions to get the result of the statement.</p>" 
+			s += "<p>This app was designed so that it would be easy to add or change operations.  Once the basic four operations were implemented, it becomes easy to implement any binary (2 operands) operation.  Let's take a look at the implementation of the x^y function:</p>"
+			s += "<pre>public static final int OP_POW = 4;</pre>"
+			s += "<p>First, add in a new constant to the Operator.java file to help with readability and simplicity </p>"
+			s += "<pre>else if (value.equals(\"x^y\"))<br>  op = new Operator(Operator.OP_POW, 4);</pre>"
+			s += "<p>Modify Calculator.java to see if the x^y button was pressed, then create an Operator and assign it a priority.</p>"
+			s += "<pre>case Operator.OP_POW: return Math.pow(n1, n2);</pre>"
+			s += "<p>Again in Calculator.java, add to the switch statement in the calculate method.</p>"
+			s += "<p>Many two-operand operations can be added with ease, and adding one-operand operations is easy as well.</p>"
+			s += "<h3>Future Improvements</h3>"
+			s += "<ul>"
+			s += "<li>Minor bug fixes</li>"
+			s += "<li>Re-implement using only one stack of an Abstract Class where objects of type Number and Operator Classes could share the stack.</li>"
+			s += "<li>Implement parentheses for more expansive expressions</li>"
+			s += "<li>Make the interface more attractive and add a custom menu bar</li>"
+			s += "</ul>"			
+			s += "<h3>Notes:</h3>"
+			s += "<p>This is a personal project that is an extension of a Java Calculator I created.  The Java Calculator was not stack based, but I wanted to make this one more like the calculators seen today.  This was the first \"real\" Android Application I created and was an experiment to help me learn the language.</p>"
+			break			
+
+		  case "mwtab1"
+			s += "<h2>This Website</h2>"
+			s += "<h3>Description</h3>"
+			s += "<p>This website is more than just a simple static portfolio website.  It serves as a place for me to test some more advanced techniques.  This entire website encorporates techniques such as responsive design, AJAX use, a User/Login system, and a custom Content Management System.</p>" 
+			s += "<h3>Background</h3>"
+			s += "<p>There is an administrative portal that only the superuser has access to.  There is a custom Content Management System for the blog page with features like create, edit, and delete.  Each blog post and individual blog page is dynamically generated through a database.  This current page uses AJAX to dynamically generate the content based on which tab is currently selected.  It also uses a local caching system so the server is only hit once when a tab is selected.  "
+			s += "The local caching takes advantage of the 'display' style property of the div elements.</p>"		
+			s += "<p>This site is written in HTML, CSS, Javascript, and the Twillium language.  You probably haven't heard of Twillium because it is my Dad's own language that he and his partner wrote, and currently isn't public.  It is similar to PHP, but has its own Database Engine (No need to connect to MYSQL), however it would do Twillium a great injustice to say that they are the same.</p>"
+			s += "<h3>Future Improvements</h3>"
+			s += "<ul>"
+			s += "<li>Adding a search feature to the blog page</li>"
+			s += "<li>Comments Section for the blog</li>"
+			s += "</ul>"			
+			s += "<h3>Notes:</h3>"
+			s += "<p>I have worked on many sites on my local machine, but this is my first site that is actually live!</p>"
+			break					
+
+		  case "mstab0"
+			s += "<h2>C Shell</h2>"
+			s += "<h4>Main Files</h4>"
+			s += "<a href='/res/C_Shell.c' target='_blank'>C_Shell.c</a>"
+			s += "<p class='note'>Note: Will only run on a Linux machine as the system calls are different</p>"
+			s += "<img src='/images/C_Shell.jpg' style='max-width: 100%;'>"
+			s += "<p class='note'>Shell running different commands.  (Done on a windows machine through SSH to UNLV's Linux machines).</p>"
+			s += "<h3>Description</h3>"
+			s += "<p>This is a simple Shell program that is similar to a Linux Terminal or Windows Command Prompt.</p>" 
+			s += "<h3>Background</h3>"
+			s += "<p>A Shell program is used to execute commands within the system.  It is an alternative to a GUI where the user uses the mouse to execute commands.  This program is written in C in order to execute Linux system calls using the execvp() function.  To execute the commands, a child process is created using the fork() function.</p>"
+			s += "<h3>Features</h3>"
+			s += "<ul>"
+			s += "<li>Prints the current working directory and awaits for the user to enter a command</li>"
+			s += "<li>Parses the command and its arguments into an array using strtok()</li>"
+			s += "<li>Executes the command using the execvp() C function</li>"
+			s += "<li>Supports the backspace and delete characters</li>"
+			s += "<li>Up and Down arrow keys cycle through a history of the previous commands</li>"
+			s += "</ul>"
+			s += "<h3>Future Improvements</h3>"
+			s += "<ul>"
+			s += "<li>Support for the TAB key to autocomplete</li>"
+			s += "<li>Minor bug fixes</li>"
+			s += "</ul>"
+			s += "<h3>Notes</h3>"
+			s += "<p>This was a school project that was assigned in my Operating Systems class.  This was one of my first programs written in the C language and was an interesting learning experience to say the least.</p>"
+			break							
+
+		  case "mhtab0"
+			s += "<h2>Sensors, LEDs, and PWMs</h2>"
+			s += "<h4>Main Files</h4>"
+			s += "<a href='/res/rgbPWM.c' target='_blank'>rgbPWM.c</a> | "
+			s += "<a href='/images/wsn_schematic.jpg' target='_blank'>PCB Schematic Image</a><br>"
+			s += "<p class='note'>Note: If you've never programmed a microcontroller before, the code may look very confusing."
+			s += "<br>Note: The image link above is from a PCB layout that I did of the full project containing two AVRs, a Wireless Transceiver, and some other additional components.</p>"
+			s += "<img src='/images/rgbPWMbreadboard.jpg' style='max-width: 100%;'>"
+			s += "<p class='note'>Breadboard containing the AVR.  LED is displaying a red color because the temperature sensor was heated.</p>"
+			s += "<h3>Description</h3>"
+			s += "<p>This project is a demonstration of how a temperature sensor can control the color of a RGB LED through the use of Pulse Width Modulation (PWM).  A PWM is just a way of generating an analog signal from a digital signal.</p>"			
+			s += "<h3>Background</h3>"
+			s += "<p>The AVR Microcontroller is a very inexpensive, yet powerful device that can be used to control many things.  The AVR is programmed by writing to various registers inside of the device.  This program is written in C and executes in a loop on the AVR.  The AVR is connected to a LM34 Temperature Sensor and reads in the value and converts it to Fahrenheit.  If the temperature is cold or cool, a PWM is sent to the RGB LED to make it glow blue.  If the temperature is hot or warm, a different PWM is sent to the RGB LED to make it glow red.</p>" 
+			s += "<h3>Future Improvements</h3>"
+			s += "<ul>"
+			s += "<li>Implement the Wireless Feature</li>"
+			s += "</ul>"						
+			s += "<h3>Notes:</h3>"
+			s += "<p>Initially this project was also supposed to demonstrate the AVR's wireless capability.  One AVR would be used for reading the temperature sensor, and then transmit the reading wirelessly to a second AVR, which would then control the RGB LED.  Due to faulty equipment, I was not able to get it fully working, so I left out the wireless part.  I'd like to go back to this project one day, when I get a new AVR and a new wireless transceiver.</p>"
+			break
+
+		  case "mhtab1"
+			s += "<h2>Band Stop Filter</h2>"
+			s += "<h4>Main Files</h4>"
+			s += "<a href='/res/BandStopFilter.pdf' target='_blank'>BandStopFilter.pdf</a><br>"
+			s += "<p class='note'>Note: Simple Lab Write-up with calculations and examples.</p>"
+			s += "<h3>Description</h3>"
+			s += "<p>This circuit is a Band-Stop Filter.  It is a demonstration of one type of frequency response in an AC Circuit.  This specific circuit is called a Twin-T circuit, due to the way that the Band-Stop Circuit is organized.</p>"
+			s += "<h3>Background</h3>"
+			s += "<p>This circuit takes a signal, and removes a specified range of frequencies from it.  For example, if your home speaker system has an annoying buzzing noise, you could measure the frequency that the buzzing noise is operating at, and then run the signal through this Band-Stop Filter to eliminate the buzzing noise." 
+			s += "  The values for the resistors and are determined by the frequency you wish to eliminate.  Consult the document at the top of this page for a more thorough explanation and demonstration.</p>"
+			s += "<h3>Schematic</h3>"
+			s += "<img src='/images/bandStopCircuit.png' style='max-width: 100%;'>"
+			s += "<h3>Notes:</h3>"
+			s += "<p>This was a project that I did for my Circuits II Lab Class.</p>"
+			break
+
+		case "vhdltab0"
+			s += "<h2>VHDL Binary Multiplier</h2>"
+			s += "<h4>Main Files</h4>"
+			s += "<a href='/res/combinationalMultiplier.txt' target='_blank'>combinationalMultiplier.vhdl</a> | "
+			s += "<a href='/res/fullAdder.txt' target='_blank'>fullAdder.vhdl</a> | "
+			s += "<a href='/res/halfAdder.txt' target='_blank'>halfAdder.vhdl</a><br>"
+			s += "<p class='note'>Note: Above files are displayed in .txt format for ease of display.  If you download them, make sure to save as the appropriate file extension.</p>"
+			s += "<h3>Description</h3>"
+			s += "<p>This program is a 4-bit Binary Combinational Multiplier written in VHDL.  It takes in two 4-bit inputs, multiplies them together, and has one 8-bit output.</p>"
+			s += "<h3>Background</h3>"
+			s += "<p>VHDL is a Hardware Description Language that is used to program numerous devices, such as a FPGA (Field-Programmable Gate Array).  FPGAs allow the programmer to interconnect basic circuit elements to one another.  A breadboard can only hold so many components, FPGAs can hold 60,000+, thus VERY large circuits can be built with ease on a single small device.  This circuit is designed through chaining half-adders and full-adders, along with multiple AND gates.  This circuit alone would take up the space of around 10 breadboards to make!</p>"
+			s += "<img src='/images/circuitDiagram.png'>"
+			s += "<h3>Block Diagram</h3>"
+			s += "<img src='/images/blockDiagram.png'>"
+			s += "<br><h3>Results</h3>"
+			s += "<p>From the simulation below, any given 4-bit values for A_IN and B_IN will make R_OUT the product of A and B.</p>"
+			s += "<img src='/images/simulationResults.png'>"
+			s += "<h3>Future Improvements</h3>"
+			s += "<ul>"
+			s += "<li>Chain more adders and build a 16-bit Multiplier</li>"
+			s += "<li>Implement on a FPGA</li>"
+			s += "<li>Allow signed multiplication</li>"
+			s += "</ul>" 	
+			break	
+		
+		  case "vhdltab1"
+			s += "<h2>VHDL VGA Reflex Game</h2>"
+			s += "<h4>Main Files</h4>"
+			s += "<a href='/res/ReflexGame.txt' target='_blank'>ReflexGame.vhdl</a><br>"
+			s += "<p class='note'>Note: Above file is displayed in .txt format for ease of display.  If you download it, make sure to save with the appropriate file extension.</p>"
+			s += "<h3>Description</h3>"
+			s += "This program is a simple game that tests the player's reflexes, and is written in VHDL.  It can be played on any TV or device that accepts VGA input.  A ball bounces back and forth across the screen, and the player must stop the ball with the pushbutton.  What ever colored section the ball is stopped in will generate points.  The ball will parmanently gain speed for every 10 points that are accumulated."
+			s += "<h3>Background</h3>"
+			s += "<p>This program utilizes the DE2 Board from Altera.  The board contains a FPGA that is programmed to control a VGA output, accept user input through a pushbutton, and display the score on a series of 7-Segment Displays.  The VHDL code is written for the Cyclone II FPGA.</p>"
+			s += "<img src='/images/reflex_game_image.jpg' style='max-width: 100%;'>"
+			s += "<p class='note'>Game being played on a 46\" Flatscreen TV.</p>"
+			s += "<h3>DE2 Board</h3>"
+			s += "<img src='/images/reflex_game_de2board.jpg' style='max-width: 100%;'>"
+			s += "<p class='note'>The current score is displayed onto the 7-Segment Displays</p>"			
+			s += "<h3>Future Improvements</h3>"
+			s += "<ul>"
+			s += "<li>Make it easier on the eyes</li>"
+			s += "<li>Display the score on screen</li>"
+			s += "<li>Allow for multiple users to play at once and compete</li>"
+			s += "</ul>" 
+			s += "<h3>Notes</h3>"
+			s += "<p>This game is completely portable,and only utilizes a small portion of the DE2 Board.  The FPGA, 7-segments, and the push button could be put onto their own board, and fit in your hand.  All you would have to do is plug it into a power outlet, and any monitor that supports VGA and everything will be good to go.</p>"
+			break	
+				
+		end
+
+		return( s.value )
+	END
+
+END
+

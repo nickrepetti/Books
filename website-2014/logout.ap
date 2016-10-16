@@ -1,0 +1,9 @@
+<[
+	LIBRARY \sdweb\home\websites\NickRepetti\libs\support.flb
+	
+	session = new( "session" )
+	user = new( "objUser" )
+	user.loginStatus( 0 )
+	
+	session.redir( "/index.htm" )
+]>

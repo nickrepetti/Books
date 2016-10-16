@@ -1,0 +1,30 @@
+<[
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\support.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+	
+]><!DOCTYPE html>
+<html lang="en">
+  <head>
+  <[ ! support.pageHead( {{ "title", "nickrepetti.com - Contact" }} ) ]>
+ </head>
+  <body>
+	<[ ! support.pageNav( {{ "pgid", "Contact" }} ) ]>
+    <div class="container-fluid" style='margin-top: 20px;'>
+      <div class="row-fluid">
+	    <h3>Contact Information</h3>
+        <p>If you have any questions, comments, or would just like to get in contact with me, please feel free to send me an email.<p>
+        <b>Email: </b><a href='mailto:repettin@yahoo.com'>repettin@yahoo.com</a>
+      </div>
+    </div>
+
+    <hr style='margin-top:50px;'>
+
+    <footer>
+      <[ ! support.copyright( ) ]>
+    </footer>
+
+	<[ ! support.pageFoot( ) ]>
+  </body>
+</html>

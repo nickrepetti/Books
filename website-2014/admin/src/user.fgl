@@ -1,0 +1,64 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// 	(c) Copyright 2013, Nick Repetti, All Rights Reserved
+//		Portions Copyright RadWeb Technologies, LLC.
+
+
+////////////////////////////////////////////////
+CLASS objUser
+////////////////////////////////////////////////
+  PUBLIC:
+  	local uid, data
+
+	METHOD new( )
+		::init( )
+		return( 1 )
+	END
+
+	METHOD init( )
+		::uid = ""
+		::data = new( "objUser_data" )
+	END
+	
+	METHOD get( )
+		local support, err
+
+		support = new( "objSupport" )
+
+		try
+			objCopy( self, support.keyvalue.user )
+			::data.password = support.strDecrypt( ::data.password )
+		catch ( err )
+			::init( )
+		end
+
+		return( self )
+	END
+
+	METHOD isLoggedIn( )
+		return( ::data.isloggedin )
+	END
+
+	METHOD loginStatus( flag=0 )
+		::get( )
+		::data.isloggedin = flag 
+		::put()
+	END
+
+	METHOD put( )
+		local pword = ::data.password
+		::data.password = objSupport().strEncrypt( ::data.password )
+		//fileWriteASCII( ::datafile, pack( self ) )
+		objSupport().keyvalue.user = self
+		::data.password = pword
+	END
+
+END
+
+
+////////////////////////////////////////////////
+CLASS objUser_data
+////////////////////////////////////////////////
+  PUBLIC:
+  	local fname="", lname="", password="", isloggedin=0
+END
+

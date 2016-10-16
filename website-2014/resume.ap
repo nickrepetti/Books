@@ -1,0 +1,121 @@
+<[
+	LIBRARY \sdweb\home\websites\nickrepetti\libs\support.flb
+	
+	session = new( "session" )
+	support = new( "objSupport" )
+
+]><!DOCTYPE html>
+<html lang="en">
+  <head>
+  <[ ! support.pageHead( {{ "title", "nickrepetti.com - Resume" }} ) ]>
+  </head>
+  <body style="font-family: Tahoma;">
+    <[ ! support.pageNav( {{ "pgid", "Resume" }} ) ]>			
+	<div class="container-fluid" style="margin-top: 40px;">
+	  <div class="row-fluid">
+	    <div class="span8 offset2">		  
+	      <div class="row-fluid">
+		    <div class="span4 offset10">Download: <a href='/res/NickRepetti_Resume.pdf' target='_blank'>PDF</a></div>
+		  </div>
+		  <div class="row-fluid" style="border: 1px solid #EEEEEE; background-color: #F0F0F3;">
+		    <div class="span8 offset2" style="margin-top: 65px; padding: 15px;">
+			  <div class="row-fluid">
+				<div class="span6"><b>Nick Repetti</b></div>
+			  </div>
+			  <div class="row-fluid">
+				<div class="span6">Las Vegas, NV</div>
+				<div class="span6">repettin@yahoo.com</div>
+			  </div>
+			  <hr class="hRowTop">
+				OVERVIEW
+			  <hr class="hRowBottom">
+			  Senior at UNLV - <b>Computer Engineering</b> major with a minor in <b>Computer Science</b>.
+			  <br><br>I am a computer engineering student with reasonable real-world skills who is passionate about technology and its commercial applications. I am seeking an internship complimentary with my skill set and that can best position my career. Specific areas of strength include:
+			  <br><br><ul>
+				<div class="row-fluid">
+				  <div class="span6"><li>Computer Software and Hardware Programming</li></div>
+				  <div class="span6"><li>Advanced Mathematics and Electronics</li></div>
+				</div>
+				<div class="row-fluid">
+				  <div class="span6"><li>Microcontroller and Gate-level Circuit Design</li></div>
+				  <div class="span6"><li>Arduino, Rasperry Pi, and AVR integration and programming</li></div>
+				</div>
+				<div class="row-fluid">
+				  <div class="span6"><li>Computer Systems Architecture</li></div>
+				  <div class="span6"><li>Algorithm and Data Structure Analysis</li></div>
+				</div>
+				<div class="row-fluid">
+				  <div class="span6"><li>Wireless and Automation Systems</li></div>
+				  <div class="span6"><li>Custom-built, full-scale, responsive portfolio website</li></div>
+				</div>
+			  </ul>
+			  <b>Anticipated Graduation: Fall 2014</b>
+			  <hr class="hRowTop">
+				COMPUTER SKILLS
+			  <hr class="hRowBottom">
+			  <ul>
+				<li>Java, C++, C, Assembler, some PHP, JavaScript and some JQuery, HTML5, CSS3, XML, VHDL, WordPress</li>
+				<li>Web applications, responsive designs, AJAX, custom CMS</li>
+				<li>Mobile, Tablet, Laptop, and Desktop devices running Windows, iOS, and Android Operating Systems</li>
+				<li>Unix/Linux experience and familiarity – Ubuntu</li>
+				<li>Microsoft Office, Word Processing, Spreadsheets</li>
+				<li>Visual Studio, Quartus II, Cadence OrCad/PSpice, AVR Studio, Altium PCB Design, and Eclipse IDEs</li>
+				<li>Digital Logic and Gate-level schematic design</li>
+				<li>RISC architectures and processor design</li>
+				<li>Advanced hardware and software development and integration for AVR, Arduino, Rasberry PI, and based systems</li>
+			  </ul>
+			  <hr class="hRowTop">
+				RELATED EXPERIENCE
+			  <hr class="hRowBottom">
+			  <b>Software, Web, and Mobile</b>
+			  <ul>
+				<li>C++ & Java GUI Development</li>
+				<li>Android Application Development</li>
+				<li>Static and dynamic sites and web applications </li>
+				<li>Responsive designs and optimized content delivery</li>
+				<li>Custom-built Web Content Management System</li>
+			  </ul>
+			  <b>Hardware</b>
+			  <ul>
+				<li>AVR Microcontroller Programming – Assembler, C++, and C</li>
+				<li>VHDL designs implemented on FPGAs</li>
+				<li>From-scratch physical arcade game design and development on multiple breadboards</li>
+				<li>Operation of Electronics Lab Equipment – Oscilloscope, Function Generator, Power Supply, Multi-meter, etc.</li>
+			  </ul>
+			  <b>Tinkering</b>
+			  <ul>
+				<li>Arduino-based self-driving toy car</li>
+				<li>Custom-built computer</li>
+				<li>Raspberry PI-based home media center</li>
+				<li>Wireless sensor network with AVR AtMega328p and RF Transceiver Module</li>
+			  </ul>
+			  <hr class="hRowTop">
+				AFFILIATIONS
+			  <hr class="hRowBottom">
+			  <ul>
+				<li><b>UNLV Student Ambassador Program</b>, College of Engineering</li>
+				January 2010 – December 2012
+				<li><b>UNLV IEEE</b></li>
+				December 2011 - December 2012
+			  </ul>
+			  <hr class="hRowTop">
+				SPECIAL INTERESTS
+			  <hr class="hRowBottom">
+				Guitars, Sports, Skateboarding, and Tinkering
+			  <hr class="hRowTop">
+				REFERENCES
+			  <hr class="hRowBottom">
+				Furnished up request.
+    		</div>
+    	  </div>
+    	</div>
+      </div>
+    </div>
+    
+    <hr style='margin-top:50px;'>
+    <footer>
+      <[ ! support.copyright( ) ]>
+    </footer>
+    <[ ! support.pageFoot( ) ]>
+  </body>
+</html>

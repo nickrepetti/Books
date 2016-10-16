@@ -1,0 +1,522 @@
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// 	(c) Copyright 2013, Nick Repetti, All Rights Reserved
+//		Portions Copyright RadWeb Technologies, LLC.
+
+//	objBlog
+//	  objBlog_data
+//
+//	objBlog_stats
+
+/////////////////////////////////////////////////
+CLASS objBlog
+/////////////////////////////////////////////////
+  PUBLIC:
+    local IsOpen=0, LockTimeout=2, errmsg='', db=0, datadrive
+    local blogid, data, date, title
+    
+    const ORDER_BLOGID = 1
+    const ORDER_TITLE = 2
+    const ORDER_DATE = 3
+
+    METHOD New( )
+        ::datadrive = session( ).data( 'data_drive' )
+        ::Init( )
+        return( 1 )
+    END
+
+    METHOD Init( )
+        ::blogid = ""
+        ::data = new( 'objBlog_data' )
+        ::date = ""
+        ::title = ""
+        return( 1 )
+    END
+
+    ACCESS aDataStructure
+        static a = {
+            { "blogid", "C", 15, 0 },
+            { "title", "C", 80, 0 },
+            { "date", "C", 14, 0 },
+            { "data", "B", 20, 0 }
+        }
+        return( a )
+    END
+
+    ACCESS aDataIndexes
+        static a = {
+            { ::dbIndexName, "field->blogid", 0 },
+            { ::dbIndexName2, "upper( field->title + field->blogid )", 0 },
+            { ::dbIndexName3, "field->date + field->blogid", 1 }
+        }
+        return( a )
+    END
+
+    ACCESS dbFileName
+        return( ::datadrive + '\nickrepetti\blog.db' )
+    END
+    ACCESS dbIndexName
+        return( ::datadrive + '\nickrepetti\blog.dx' )
+    END
+    ACCESS dbIndexName2
+        return( ::datadrive + '\nickrepetti\blog2.dx' )
+    END
+    ACCESS dbIndexName3
+        return( ::datadrive + '\nickrepetti\blog3.dx' )
+    END
+
+    METHOD create( )
+        return( dbcreate( ::dbFileName, ::aDataStructure ) )
+    END
+
+    METHOD open( index=1 )
+        if ( ::IsOpen )
+            ::IsOpen++
+            return( 1 )
+        end
+
+        ::db = openObjData( self )
+
+        (::db)->dbOrder( index )
+        ::dbGoTop( )
+
+        ::IsOpen = 1
+        return( 1 )
+    END
+
+    METHOD close( )
+        if ( ::IsOpen == 1 )
+            (::db)->dbClose( )
+        end
+        ::IsOpen--
+        return( 1 )
+    END
+
+    METHOD seek( item )
+        (::db)->dbSeek( upper( item ) )
+        return( (::db)->dbFound( ) )
+    END
+
+    METHOD reindex( )
+        return( (::db)->dbReindex( ) )
+    END
+
+    METHOD get( )
+        ::blogid = alltrim( (::db)->blogid )
+        ::data = unpack( (::db)->data )
+        ::date = alltrim( (::db)->date )
+        ::title = alltrim( (::db)->title )
+        return( 1 )
+    END
+
+    METHOD put( )
+        (::db)->blogid = ::blogid
+        (::db)->data = pack( ::data )
+        (::db)->date = ::date
+        (::db)->title = ::title
+        return( 1 )
+    END
+
+    METHOD validate( )
+        return( 1 )
+    END
+
+    METHOD CreateNewRecord( key )
+        local y, ymo, stats
+        
+        ::errmsg = ''
+        
+        if ( ! ::validate( ) )
+            return( 0 )
+        end
+
+        ::open( )
+        if ( ::seek( key ) )
+            ::errmsg = "Record (" + key + ") already exists!"
+            ::close( )
+            return( 0 )
+        end
+
+        (::db)->dbAppend( )
+        ::date = date( "YYYYMMDDHHMNSS" )
+
+		//  Fill in the archive stats array
+		y = ::date.left( 4 )
+		ymo = ::date.left( 6 )
+
+		stats = objBlog_stats().get( )
+
+		if ( ! stats.aNewYear.has( y ) )
+			stats.aNewYear[ y ] = 0
+		end
+		stats.aNewYear[ y ]++
+
+		if ( ! stats.aNewMonth.has( ymo ) )
+			stats.aNewMonth[ ymo ] = 0
+		end
+		stats.aNewMonth[ ymo ]++
+		
+		stats.put( )
+
+        ::put( )
+        ::unlock( )
+
+        ::close( )
+        return( 1 )
+    END
+
+    METHOD GetRecord( key )
+        ::errmsg = ''
+        ::open( )
+
+        ::init( )
+        if ( ! ::seek( key ) )
+            ::errmsg = "Unable to locate record (" + key + ")"
+            ::close( )
+            return( 0 )
+        end
+
+        ::get( )
+        ::close( )
+
+        return( 1 )
+    END
+
+    METHOD SetRecord( key )
+        ::errmsg = ''
+        if ( ! ::validate( ) )
+            return( 0 )
+        end
+
+        ::open( )
+
+        if ( ! ::seek( key ) )
+            ::errmsg = "Unable to locate record (" + key + ")"
+            ::close( )
+            return( 0 )
+        end
+
+        if ( ::rlock( ) )
+            ::put( )
+            ::unlock( )
+        end
+        ::close( )
+
+        return( 1 )
+    END
+
+    METHOD deleteRecord( key )
+        ::errmsg = ''
+        ::open( )
+
+        if ( ! ::seek( key ) )
+            ::errmsg = "Unable to locate record (" + key + ")"
+            ::close( )
+            return( 0 )
+        end
+		::get( )
+        if ( ::rlock( ) )
+            (::db)->dbDelete( )
+            ::unlock( )
+        end
+
+        return( (::db)->dbIsDeleted( ) )
+    END
+
+    METHOD dbOrder( val )
+        (::db)->dbOrder( val )
+    END
+    METHOD dbGoto( val )
+        (::db)->dbGoto( val )
+    END
+    METHOD dbGoTop( )
+        (::db)->dbGoTop( )
+    END
+    METHOD dbGoBottom( )
+        (::db)->dbGoBottom( )
+    END
+    METHOD dbEOF( )
+        return( (::db)->dbEOF( ) )
+    END
+    METHOD dbBOF( )
+        return( (::db)->dbBOF( ) )
+    END
+    METHOD dbseek( id )
+        return( ::seek( id ) )
+    END
+    METHOD dbSkip( index )
+        if ( type( index ) == 'N' )
+            (::db)->dbSkip( index )
+        else
+            (::db)->dbSkip( )
+        end
+        return( 1 )
+    END
+    METHOD dbDelete( )
+        if ( ::rlock( ) )
+            (::db)->dbDelete( )
+            ::unlock( )
+        end
+        return( (::db)->dbIsDeleted( ) )
+    END
+
+    METHOD dbRecCount( )
+        local cnt
+        ::open( )
+        cnt = dbRecCount( ::db, 1 )
+        ::close( )
+        return( cnt )
+    END
+
+    METHOD dbSize( )
+        local ttl = filesize( ::dbFileName )
+        ttl += filesize( ::dbFileName.strswap( '.db', '.dbt' ) )
+        return( ttl )
+    END
+
+    METHOD rlock( )
+        local EndTime
+        if ( ! ::IsOpen )
+            ::errmsg = 'Database must be open to lock record'
+            return( 0 )
+        end
+        EndTime = seconds( ) + ::LockTimeout
+        while ( ! (::db)->dbRLock( ) )
+            if ( ( seconds( ) > EndTime ) || ( ( seconds( ) + ::LockTimeout ) < EndTime ) )
+                ::errmsg ='Unable to lock database record'
+                return( 0 )
+            end
+        end
+        return( 1 )
+    END
+
+    METHOD unlock( )
+        if ( ! ::IsOpen )
+            ::errmsg = 'Database must be open to unlock record'
+            return( 0 )
+        end
+        (::db)->dbUnLock( )
+        return( 1 )
+    END
+
+    //////////////////////////////////////////////
+
+    ACCESS aIndexKeys
+        static a = {
+            { ::ORDER_BLOGID, 'blogid' },
+            { ::ORDER_TITLE, 'title' },
+            { ::ORDER_DATE, 'date' }
+        }
+        return( a )
+    END
+
+    ACCESS aTemplateList
+        local a = {
+            { 'default', 'default' },
+            { 'raw', 'raw' }
+        }
+        return( a )
+    END
+
+    METHOD dataFilter( filter, searchstr )
+        local a, p1
+
+        searchstr = upper( searchstr )
+
+        filter = 0 + filter
+
+        switch ( filter )
+          case ::ORDER_BLOGID
+            p1 = left( searchstr, 15 )
+            a = {
+                { 'index', filter },
+                { 'key', upper( searchstr ) },
+                { 'filter', {
+                        { 'blogid', '=', p1 }
+                    }
+                }
+            }
+            break
+
+          case ::ORDER_TITLE
+            p1 = left( searchstr, 15 )
+            a = {
+                { 'index', filter },
+                { 'key', upper( searchstr ) },
+                { 'filter', {
+                        { 'title', '=', p1 }
+                    }
+                }
+            }
+            break
+
+          case ::ORDER_DATE
+            p1 = left( searchstr, 15 )
+            a = {
+                { 'index', filter },
+                { 'key', upper( searchstr ) },
+                { 'filter', {
+                        { 'date', '=', p1 }
+                    }
+                }
+            }
+            break
+
+        end
+
+        return( a )
+    END
+
+    METHOD dataTemplate( template )
+        local a
+
+        switch( lower( '' + template ) )
+          case 'raw'
+            a = {
+                { 'rowClick', "doClick('#blogid#');" }
+            }
+            break
+
+          case 'default'
+            a = {
+                { 'rowClick', "doClick('#blogid#');" },
+                { 'data', {
+                        { 'recnum', '#recnum' }
+                    }
+                },
+                { 'fields', {
+                        { 'blogid' },
+                        { 'recnum' }
+                    }
+                }
+            }
+            break
+
+        end
+
+        return( a )
+    END
+
+    ACCESS lbType
+        return( {} )
+    END
+
+    ////////////////////////////////////////////////
+	//  Custom Methods
+	METHOD aQuery( dte )
+		local opts, a, data
+
+		opts = {
+			{ "pglen", 1000 },
+			{ "index", ::ORDER_DATE },
+			{ "key", dte },
+			{ "filter", {
+					{ "date", "=", dte }
+				}
+			}
+		}
+		data = new( "objData" )
+		
+		a = data.query( self, opts )
+		
+		return( a )		
+	END
+
+	METHOD getStats( )
+		local s, date, stats, year, yearCnt, month, monthCnt, a, i, cnt, data
+		
+		s = new( "StringBuffer" )
+		date = new( "objDate" )
+		
+		s += "<div class='span4' style='padding: 25px;'>"
+		s += "<h3>About Me</h3>"
+		s += "<hr style='border: 1px solid #000000;'>"
+		s += "<img src='/images/nrHead.jpg' style='margin-right: 10px; float: left;'>"
+		s += "<p>I am a Computer Engineering student at the University of Nevada, Las Vegas. This blog will mainly contain posts about sports and technology.</p>"
+		s += "<h4 style='text-align: right;'>Nick Repetti</h4>"
+		s += "<br><h3>Archive</h3>"
+		s += "<hr style='border: 1px solid #000000;'>"
+		
+		stats = objBlog_stats().get( )
+		
+		yearCnt = stats.aNewYear.first
+		s += "<ul>"
+		
+		while ( yearCnt )
+			year = stats.aNewYear.indicie
+			s += "<li><a href='#'>" + year + " (" + yearCnt + ")</a></li>"
+			
+			monthCnt = stats.aNewMonth.first
+			s += "<ul>"
+			
+			while ( monthCnt )
+				month = stats.aNewMonth.indicie
+			
+				if ( stats.aNewMonth.indicie.left( 4 ) == "" + year )
+					s += "<li><a href='#'>" + date.format( month + "01", "MMMM" ) + " (" + monthCnt + ")</a></li>"
+					s += "<ul>"
+					
+					data = new( "objData" )
+					
+					a = ::aQuery( month )
+					cnt = len( a )
+					for ( i=1; i<=cnt; i++ )
+						s += "<li><a href='/blog/post.htm?id=" + a[i].blogID + "'>" + a[i].title + "</a></li>"
+					end
+					
+					s += "</ul>"
+				end
+			
+				monthCnt = stats.aNewMonth.next
+			end
+			
+			s += "</ul>"
+			
+			yearCnt = stats.aNewYear.next
+		end
+		
+		s += "</ul>"
+		s += "</div>"
+		
+		return ( s.value )
+	END
+
+END
+
+////////////////////////////////////////////////
+CLASS objBlog_data
+////////////////////////////////////////////////
+  PUBLIC:
+  	local subtitle, content, dateUpdated
+  	
+END
+
+
+////////////////////////////////////////////////
+CLASS objBlog_stats
+////////////////////////////////////////////////
+  PUBLIC:
+  	local aNewYear, aNewMonth
+  	
+  	const keyvalue = "blog_stats"
+  
+	METHOD new( )
+		::init( )
+		return( 1 )
+	END
+	
+	METHOD init( )
+		::aNewYear = aArray( )
+		::aNewMonth = aArray( )
+	END
+
+	METHOD get( )
+		objCopy( self, objSupport().keyvalue.( ::keyvalue ) )
+		return( self )
+	END
+	
+	METHOD put( )
+		objSupport().keyvalue.( ::keyvalue ) = self
+	END
+  
+END
