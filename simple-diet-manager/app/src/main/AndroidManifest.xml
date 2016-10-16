@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nickrepetti.simpledietmanager" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".DietsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_diets"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ViewDietActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_view_diet"
+            android:launchMode="singleTop"
+            android:parentActivityName=".DietsActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nickrepetti.simpledietmanager.DietsActivity" />
+        </activity>
+        <activity
+            android:name=".AddDietActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_add_diet"
+            android:parentActivityName=".DietsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nickrepetti.simpledietmanager.DietsActivity" />
+        </activity>
+        <activity
+            android:name=".AddMealActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_add_meal"
+            android:parentActivityName=".ViewDietActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nickrepetti.simpledietmanager.ViewDietActivity" />
+        </activity>
+        <activity
+            android:name=".AddItemActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_add_item"
+            android:parentActivityName=".ViewDietActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nickrepetti.simpledietmanager.ViewDietActivity" />
+        </activity>
+        <activity
+            android:name=".NutritionFactsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_nutrition_facts"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ShoppingListActivity"
+            android:label="@string/title_activity_shopping_list" >
+        </activity>
+    </application>
+
+</manifest>

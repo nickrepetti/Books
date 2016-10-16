@@ -1,3 +1,3 @@
-#website-2014
+#portfolio-website-2014
 
-Personal portfolio website from 2014.
+Personal portfolio website.  Created in 2014.

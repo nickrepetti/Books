@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/diet_list_item">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="50sp"
+        android:layout_weight="1"
+        android:id="@+id/diets_img_star"
+        android:src="@drawable/ic_star_blank"
+        android:contentDescription="@string/diets_img_star"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:id="@+id/diets_tv_diet_name"
+        android:text="@string/diets_tv_diet_name"
+        android:gravity="center_horizontal"
+        style="@style/diet_list_text"/>
+
+</LinearLayout>

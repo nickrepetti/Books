@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Simple Diet Manager</string>
+    <string name="action_settings">Settings</string>
+    <string name="diets_tv_diet_name">Diet Name</string>
+    <string name="meals_tv_time">8:00 P.M.</string>
+    <string name="meals_tv_category">Category</string>
+    <string name="diets_img_star">Toggle Active Diet</string>
+    <string name="diets_btn_add">Add Diet</string>
+    <string name="meals_btn_add">Add Meal</string>
+    <string name="nutrition_facts_tv_title">Nutrition Facts</string>
+    <string name="nutrition_facts_tv_serving_size">Serving Size</string>
+    <string name="nutrition_facts_tv_serving_size_amount">172 g</string>
+    <string name="nutrition_facts_tv_servings_per_container">Servings per Container</string>
+    <string name="nutrition_facts_tv_servings_per_container_amount">6</string>
+    <string name="nutrition_facts_tv_amount">Amount Per Serving</string>
+    <string name="nutrition_facts_tv_calories">Calories</string>
+    <string name="nutrition_facts_tv_calories_amount">200</string>
+    <string name="nutrition_facts_tv_fat_calories">Calories from Fat</string>
+    <string name="nutrition_facts_tv_fat_calories_amount">8</string>
+    <string name="nutrition_facts_tv_daily_value">% Daily Value</string>
+    <string name="nutrition_facts_tv_fat">Total Fat</string>
+    <string name="nutrition_facts_tv_fat_amount">1 g</string>
+    <string name="nutrition_facts_tv_fat_percent">1%</string>
+    <string name="nutrition_facts_tv_saturated_fat">Saturated Fat</string>
+    <string name="nutrition_facts_tv_saturated_fat_amount">0g</string>
+    <string name="nutrition_facts_tv_saturated_fat_percent">1%</string>
+    <string name="nutrition_facts_tv_cholesterol">Cholesterol</string>
+    <string name="nutrition_facts_tv_cholesterol_amount">0 mg</string>
+    <string name="nutrition_facts_tv_cholesterol_percent">0%</string>
+    <string name="nutrition_facts_tv_sodium">Sodium</string>
+    <string name="nutrition_facts_tv_sodium_amount">790mg</string>
+    <string name="nutrition_facts_tv_sodium_percent">33%</string>
+    <string name="meals_btn_add_food">Add Food</string>
+    <string name="nutrition_facts_tv_carbs">Total Carbohydrate</string>
+    <string name="nutrition_facts_tv_carbs_amount">17g</string>
+    <string name="nutrition_facts_tv_carbs_percent">6%</string>
+    <string name="nutrition_facts_tv_fiber">Dietary Fiber</string>
+    <string name="nutrition_facts_tv_fiber_amount">1g</string>
+    <string name="nutrition_facts_tv_fiber_percent">4%</string>
+    <string name="nutrition_facts_tv_sugar">Sugars</string>
+    <string name="nutrition_facts_tv_sugar_amount">9g</string>
+    <string name="view_diet_tv_heading">My Diet</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_diet_tv_name">Name</string>
+    <string name="add_diet_et_name">Diet Name</string>
+    <string name="add_diet_btn_submit">Submit</string>
+    <string name="add_meal_tv_category">Category:</string>
+    <string name="add_meal_et_name">Enter Meal Name</string>
+    <string name="add_meal_tv_time">Time:</string>
+    <string name="add_meal_et_time">Enter Meal Time</string>
+    <string name="add_meal_btn_submit">Submit</string>
+    <string name="diets_btn_delete">Delete Database</string>
+    <string name="view_diet_tv_title">My Diet</string>
+    <string name="view_diet_btn_add_meal">Add Meal</string>
+    <string name="shopping_list_tv_name">Shopping List Item</string>
+    <string name="diets_btn_shopping_list">Open Shopping List</string>
+
+    <string-array name="add_meal_sp_category">
+        <item>Breakfast</item>
+        <item>Brunch</item>
+        <item>Lunch</item>
+        <item>Snack</item>
+        <item>Dinner</item>
+        <item>Dessert</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="title_activity_nutrition_facts">Nutrition Facts Activity</string>
+    <string name="title_activity_shopping_list">Shopping List Activity</string>
+    <string name="title_activity_add_meal">Add Meal Activity</string>
+    <string name="title_activity_add_item">Add Item Activity</string>
+    <string name="title_activity_add_diet">Add Diet Activity</string>
+    <string name="title_activity_view_diet">My Diet</string>
+    <string name="title_activity_diets">My Diets</string>
+
+</resources>
