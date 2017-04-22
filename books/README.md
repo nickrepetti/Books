@@ -9,3 +9,5 @@ Clone this repository and cd to the appropriate Book -> Chapter -> Project to se
 2. Head First Servlets and JSP
 3. Pro AngularJS
 4. Spring in Action
+5. Eloquent JavaScript
+
