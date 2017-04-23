@@ -2,11 +2,14 @@
 <html>
   <head>
     <title>Media Recorder</title>
+    <link rel="stylesheet" href="app.css" />
   </head>
   <body>
-    <h1>Media Recorder</h1>
-    <p>Record your audio or video from your microphone or webcam</p>
-    <video id="videoContainer"></video>
+    <div class="container">
+      <video id="videoElement"></video>
+      <br />
+      <button id="recBtn">Record</button>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>

@@ -1,33 +1,34 @@
 (function() {
+  "use strict";
 
   const hasGetUserMedia = (navigator.getUserMedia ||
                            navigator.webkitGetUserMedia ||
                            navigator.mozGetUserMedia ||
                            navigator.msGetUserMedia);
 
-  if (hasGetUserMedia)  {
-    const opts = {
-      video: true,
-      audio: false
-    };
+  const recordButton = document.getElementById("recBtn");
 
-    navigator.getUserMedia(
-      opts, 
-      (stream) => {
-        const videoContainer = document.getElementById("videoContainer");
-        videoContainer.src = window.URL.createObjectURL(localMediaStream);
-      },
-      (e) => {
-        if (e.name === "PermissionDeniedError") {
-          alert("Please enable webcam permissions to use this app");
-        } else {
-          alert("Something went wrong, please try again.");
+  recordButton.addEventListener("click", (event) => {
+    if (hasGetUserMedia)  {
+      const opts = {
+        video: true,
+        audio: false
+      };
+
+      navigator.getUserMedia(
+        opts, 
+        (stream) => {
+          const videoElement = document.getElementById("videoElement");
+          videoElement.src = window.URL.createObjectURL(stream);
+          videoElement.play();
+        },
+        (e) => {
+          console.log(e);
         }
-        console.log(e);
-      }
-    );
-  } else {
-    alert("Sorry, the browser you are using does not support webcam recordings.");
-  }
+      );
+    } else {
+      console.log("Browser does not support getUserMedia");
+    }
+  });
 })();
 
