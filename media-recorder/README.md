@@ -2,9 +2,12 @@
 
 The purpose of this app is to allow users to record video from their webcams.
 
-The index.html file needs to be run from a server in order to access the webcam content.
-If you access the index.html file directly "file:///.../index.html", browsers will prevent
-webcam content from being loaded. 
+This app uses the getUserMedia API to record video from a user's webcam.
+Google Chrome only allows use of the API through secure origins only.
+See: https://www.chromium.org/Home/chromium-security/deprecating-powerful-features-on-insecure-origins
+
+Because of this, the app must be run through HTTPS or localhost.
+I have included a static http file server in order to run the app locally.
 
 To run the app:
 1. cd to the top level directory
