@@ -18,10 +18,10 @@ stopButton.addEventListener("click", (event) => {
 downloadButton.addEventListener("click", (event) => {
   const url = URL.createObjectURL(recordedMedia);
 
-  let a = document.createElement('a');
-  a.style = 'display: none';
+  let a = document.createElement("a");
+  a.style = "display: none";
   a.href = url;
-  a.download = 'test.webm';
+  a.download = "media_" + new Date().getTime() + ".webm";
 
   document.body.appendChild(a);
   a.click();
@@ -57,7 +57,7 @@ recordButton.addEventListener("click", (event) => {
       });
 
       recordedMedia = new Blob(recordedData, { 
-        type: 'video/webm' 
+        type: "video/webm" 
       });
       videoElement.src = URL.createObjectURL(recordedMedia);
       videoElement.controls = true;
