@@ -1,82 +1,69 @@
-(function() {
-  "use strict";
+"use strict";
 
-  const nav = navigator;
+let recordButton = document.getElementById("recBtn");
+let stopButton = document.getElementById("stopBtn");
+let downloadButton = document.getElementById("downloadBtn");
+let videoElement = document.getElementById("videoElement");
 
-  if (nav.getUserMedia || nav.webkitGetUserMedia || nav.mozGetUserMedia || 
-      nav.msGetUserMedia) {
+let mediaRecorder;
+let recordedMedia;
 
-    let recordButton = document.getElementById("recBtn");
-    let stopButton = document.getElementById("stopBtn");
-    let videoElement = document.getElementById("videoElement");
+stopButton.addEventListener("click", (event) => {
+  recordButton.disabled = false;
+  stopButton.disabled = true;
+  downloadButton.disabled = false;
+  mediaRecorder.stop();
+});
 
-    let capturedData = [];
-    let mediaRecorder;
+downloadButton.addEventListener("click", (event) => {
+  const url = URL.createObjectURL(recordedMedia);
 
-    const captureData = function(event) {
+  let a = document.createElement('a');
+  a.style = 'display: none';
+  a.href = url;
+  a.download = 'test.webm';
+
+  document.body.appendChild(a);
+  a.click();
+
+  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+});
+
+recordButton.addEventListener("click", (event) => {
+  recordButton.disabled = true;
+  stopButton.disabled = false;
+  downloadButton.disabled = true;
+
+  navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true
+  }).then((stream) => {
+    let recordedData = [];
+
+    videoElement.src = URL.createObjectURL(stream);
+    videoElement.controls = false;
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (event) => { 
       if (event.data.size > 0) {
-        capturedData.push(event.data);
+        recordedData.push(event.data);
       }
     };
 
-    const startRecording = function() {
-      const options = {
-        video: true
-      };
-
-      nav.getUserMedia(
-        options, 
-        (stream) => {
-          videoElement.src = window.URL.createObjectURL(stream);
-
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.ondataavailable = captureData;
-          mediaRecorder.onstop = stopRecording;
-          mediaRecorder.start(1000);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    };
-
-    const stopRecording = function(event) {
+    mediaRecorder.onstop = (event) => {
       mediaRecorder.stream.getTracks().forEach((track) => {
         track.stop();
       });
 
-      const buffer = new Blob(capturedData);
-      videoElement.src = window.URL.createObjectURL(buffer);
-      videoElement.play();
+      recordedMedia = new Blob(recordedData, { 
+        type: 'video/webm' 
+      });
+      videoElement.src = URL.createObjectURL(recordedMedia);
       videoElement.controls = true;
-      capturedData = [];
     };
 
-    stopButton.addEventListener("click", (event) => {
-      recordButton.disabled = false;
-      stopButton.disabled = true;
-
-      mediaRecorder.stop();
-    });
-
-    recordButton.addEventListener("click", (event) => {
-      stopButton.disabled = false;
-
-      if (recordButton.innerText === "Record") {
-        recordButton.innerText = "Pause";
-
-        if (capturedData.size > 0) {
-          mediaRecorder.resume();
-        } else {
-          startRecording();
-        }
-      } else if (recordButton.innerText === "Pause") {
-        recordButton.innerText = "Record";
-        mediaRecorder.pause();
-      }
-    });
-  } else {
-    console.log("Browser does not support getUserMedia");
-  }
-})();
+    mediaRecorder.start(1000);
+  });
+});
 
